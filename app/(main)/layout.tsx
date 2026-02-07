@@ -14,9 +14,10 @@ import {
 } from '@/components/ui/sidebar'
 import { APP_NAME } from '@/constants/app'
 import { getSnippets } from '@/lib/queries'
-import { getLanguageIconPath } from '@/lib/language-icons'
+import { getLanguageIcon, getFrameworkIcon } from '@/lib/languages'
 import { Skeleton } from '@/components/ui/skeleton'
 import Image from 'next/image'
+import Link from 'next/link'
 
 type MainLayoutProps = {
   children: React.ReactNode
@@ -28,20 +29,22 @@ const SnippetsList = async () => {
   return (
     <SidebarMenu>
       {snippets.map((snippet) => {
-        const iconPath = getLanguageIconPath(
-          snippet.framework || snippet.language
-        )
+        const iconPath = snippet.framework
+          ? getFrameworkIcon(snippet.framework)
+          : getLanguageIcon(snippet.language)
         return (
           <SidebarMenuItem key={snippet.id}>
-            <SidebarMenuButton>
-              <Image
-                src={iconPath}
-                alt={snippet.language}
-                width={16}
-                height={16}
-                className="size-4"
-              />
-              <span>{snippet.title}</span>
+            <SidebarMenuButton asChild>
+              <Link href={`/s/${snippet.id}`}>
+                <Image
+                  src={iconPath}
+                  alt={snippet.language}
+                  width={16}
+                  height={16}
+                  className="size-4"
+                />
+                <span>{snippet.title}</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         )
