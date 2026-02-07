@@ -1,14 +1,18 @@
-import dotenv from "dotenv";
-dotenv.config({ path: ".env.local" });
+import { db } from '@/db'
+import { usersTable, snippetsTable } from './schema'
+import type { Language, Framework } from '@/lib/languages'
 
-import { drizzle } from "drizzle-orm/node-postgres";
-import { usersTable, snippetsTable } from "./schema";
+type SnippetSeed = {
+  title: string
+  code: string
+  language: Language
+  framework: Framework | null
+  description: string
+}
 
-const db = drizzle(process.env.DATABASE_URL!);
-
-const snippets = [
+const snippets: SnippetSeed[] = [
   {
-    title: "React useState Hook",
+    title: 'React useState Hook',
     code: `import { useState } from 'react';
 
 function Counter() {
@@ -20,12 +24,12 @@ function Counter() {
     </button>
   );
 }`,
-    language: "typescript",
-    framework: "React",
-    description: "Basic useState hook example for managing component state",
+    language: 'typescript',
+    framework: 'react',
+    description: 'Basic useState hook example for managing component state',
   },
   {
-    title: "Express Route Handler",
+    title: 'Express Route Handler',
     code: `import express from 'express';
 
 const app = express();
@@ -38,12 +42,13 @@ app.get('/api/users', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });`,
-    language: "typescript",
-    framework: "Express",
-    description: "Basic Express.js route handler with async/await error handling",
+    language: 'typescript',
+    framework: 'express',
+    description:
+      'Basic Express.js route handler with async/await error handling',
   },
   {
-    title: "Tailwind Card Component",
+    title: 'Tailwind Card Component',
     code: `<div class="max-w-sm rounded-xl overflow-hidden shadow-lg bg-white dark:bg-gray-800">
   <img class="w-full h-48 object-cover" src="/image.jpg" alt="Card image">
   <div class="px-6 py-4">
@@ -53,12 +58,12 @@ app.get('/api/users', async (req, res) => {
     </p>
   </div>
 </div>`,
-    language: "html",
-    framework: "Tailwind",
-    description: "Responsive card component with dark mode support",
+    language: 'html',
+    framework: 'tailwind',
+    description: 'Responsive card component with dark mode support',
   },
   {
-    title: "Python List Comprehension",
+    title: 'Python List Comprehension',
     code: `# Basic list comprehension
 squares = [x**2 for x in range(10)]
 
@@ -70,12 +75,12 @@ matrix = [[i * j for j in range(5)] for i in range(5)]
 
 # Dictionary comprehension
 word_lengths = {word: len(word) for word in ['hello', 'world', 'python']}`,
-    language: "python",
+    language: 'python',
     framework: null,
-    description: "Various Python list and dictionary comprehension patterns",
+    description: 'Various Python list and dictionary comprehension patterns',
   },
   {
-    title: "Next.js API Route",
+    title: 'Next.js API Route',
     code: `import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -94,12 +99,12 @@ export async function POST(request: NextRequest) {
   
   return NextResponse.json(result, { status: 201 });
 }`,
-    language: "typescript",
-    framework: "Next.js",
-    description: "Next.js App Router API route with GET and POST handlers",
+    language: 'typescript',
+    framework: 'nextjs',
+    description: 'Next.js App Router API route with GET and POST handlers',
   },
   {
-    title: "CSS Grid Layout",
+    title: 'CSS Grid Layout',
     code: `.grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -118,12 +123,12 @@ export async function POST(request: NextRequest) {
 .grid-item:hover {
   transform: translateY(-4px);
 }`,
-    language: "css",
+    language: 'css',
     framework: null,
-    description: "Responsive CSS Grid layout with auto-fit and hover effects",
+    description: 'Responsive CSS Grid layout with auto-fit and hover effects',
   },
   {
-    title: "Drizzle ORM Query",
+    title: 'Drizzle ORM Query',
     code: `import { db } from './db';
 import { eq, and, desc, like } from 'drizzle-orm';
 import { usersTable, postsTable } from './schema';
@@ -139,12 +144,12 @@ const usersWithPosts = await db
   ))
   .orderBy(desc(usersTable.createdAt))
   .limit(10);`,
-    language: "typescript",
-    framework: "Drizzle",
-    description: "Drizzle ORM query with joins, conditions, and ordering",
+    language: 'typescript',
+    framework: 'drizzle',
+    description: 'Drizzle ORM query with joins, conditions, and ordering',
   },
   {
-    title: "React Custom Hook",
+    title: 'React Custom Hook',
     code: `import { useState, useEffect, useCallback } from 'react';
 
 function useFetch<T>(url: string) {
@@ -171,12 +176,13 @@ function useFetch<T>(url: string) {
 
   return { data, loading, error, refetch };
 }`,
-    language: "typescript",
-    framework: "React",
-    description: "Custom useFetch hook with TypeScript generics and refetch capability",
+    language: 'typescript',
+    framework: 'react',
+    description:
+      'Custom useFetch hook with TypeScript generics and refetch capability',
   },
   {
-    title: "SQL Aggregation Query",
+    title: 'SQL Aggregation Query',
     code: `SELECT 
   department,
   COUNT(*) as employee_count,
@@ -188,12 +194,13 @@ WHERE hire_date >= '2020-01-01'
 GROUP BY department
 HAVING COUNT(*) >= 5
 ORDER BY avg_salary DESC;`,
-    language: "sql",
+    language: 'sql',
     framework: null,
-    description: "SQL aggregation query with GROUP BY, HAVING, and multiple aggregate functions",
+    description:
+      'SQL aggregation query with GROUP BY, HAVING, and multiple aggregate functions',
   },
   {
-    title: "Zod Schema Validation",
+    title: 'Zod Schema Validation',
     code: `import { z } from 'zod';
 
 const userSchema = z.object({
@@ -214,50 +221,51 @@ if (result.success) {
 } else {
   console.error(result.error.issues);
 }`,
-    language: "typescript",
-    framework: "Zod",
-    description: "Zod schema with various validators and TypeScript type inference",
+    language: 'typescript',
+    framework: 'zod',
+    description:
+      'Zod schema with various validators and TypeScript type inference',
   },
-];
+]
 
 async function seed() {
-  console.log("🌱 Starting seed...");
+  console.log('🌱 Starting seed...')
 
   // First, create a user if none exists
-  const existingUsers = await db.select().from(usersTable).limit(1);
+  const existingUsers = await db.select().from(usersTable).limit(1)
 
-  let userId: number;
+  let userId: number
 
   if (existingUsers.length === 0) {
-    console.log("Creating seed user...");
+    console.log('Creating seed user...')
     const [newUser] = await db
       .insert(usersTable)
       .values({
-        name: "Demo User",
-        email: "demo@example.com",
+        name: 'Demo User',
+        email: 'demo@example.com',
       })
-      .returning();
-    userId = newUser.id;
-    console.log(`✅ Created user with id: ${userId}`);
+      .returning()
+    userId = newUser.id
+    console.log(`✅ Created user with id: ${userId}`)
   } else {
-    userId = existingUsers[0].id;
-    console.log(`Using existing user with id: ${userId}`);
+    userId = existingUsers[0].id
+    console.log(`Using existing user with id: ${userId}`)
   }
 
   // Insert snippets
-  console.log("Inserting snippets...");
+  console.log('Inserting snippets...')
   const insertedSnippets = await db
     .insert(snippetsTable)
     .values(snippets.map((snippet) => ({ ...snippet, userId })))
-    .returning();
+    .returning()
 
-  console.log(`✅ Inserted ${insertedSnippets.length} snippets`);
+  console.log(`✅ Inserted ${insertedSnippets.length} snippets`)
 
-  console.log("🎉 Seed completed successfully!");
-  process.exit(0);
+  console.log('🎉 Seed completed successfully!')
+  process.exit(0)
 }
 
 seed().catch((error) => {
-  console.error("❌ Seed failed:", error);
-  process.exit(1);
-});
+  console.error('❌ Seed failed:', error)
+  process.exit(1)
+})
