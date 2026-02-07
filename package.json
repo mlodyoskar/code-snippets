@@ -16,8 +16,8 @@
     "drizzle-orm": "^0.45.1",
     "lucide-react": "^0.563.0",
     "next": "16.1.6",
-    "prettier-plugin-tailwindcss": "^0.7.2",
     "pg": "^8.18.0",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -35,6 +35,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "prettier": "3.8.1",
+    "shiki": "^3.22.0",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5"
