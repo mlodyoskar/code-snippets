@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from './ui/button'
 import {
-  FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldLegend,
@@ -17,6 +16,13 @@ import {
 } from './ui/field'
 import { Input } from './ui/input'
 import { Textarea } from './ui/textarea'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select'
 
 const AddSnippetDialog = () => {
   return (
@@ -26,7 +32,7 @@ const AddSnippetDialog = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Snippet Management</DialogTitle>
+          <DialogTitle className="sr-only">Snippet Management</DialogTitle>
           <DialogDescription className="sr-only">
             Add your snippets, press add when you are done.
           </DialogDescription>
@@ -41,28 +47,56 @@ export default AddSnippetDialog
 
 const AddSnippetForm = () => {
   return (
-    <FieldSet>
-      <FieldLegend>Add New Snippet</FieldLegend>
-      <FieldGroup>
-        <Field>
-          <FieldLabel htmlFor="title">Title: </FieldLabel>
-          <Input id="title" type="text" placeholder="Snippet title" />
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="code">Your code: </FieldLabel>
-          <Textarea id="code" placeholder="Paste your code snippet" />
-        </Field>
-        <p>select</p>
-        <p>select</p>
-        <Field>
-          <FieldLabel htmlFor="description">Description</FieldLabel>
-          <Textarea
-            id="description"
-            placeholder="Your code description..."
-            rows={4}
-          />
-        </Field>
-      </FieldGroup>
-    </FieldSet>
+    <form>
+      <FieldSet>
+        <FieldLegend>Add New Snippet</FieldLegend>
+        <FieldGroup>
+          <Field>
+            <FieldLabel htmlFor="title">Title </FieldLabel>
+            <Input id="title" type="text" placeholder="Snippet title" />
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="code">Your code </FieldLabel>
+            <Textarea id="code" placeholder="Paste your code snippet" />
+          </Field>
+          <Field className="w-full">
+            <FieldLabel htmlFor="language">Language</FieldLabel>
+            <Select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="item">Item</SelectItem>
+              </SelectContent>
+            </Select>
+          </Field>
+          <Field className="w-full">
+            <FieldLabel htmlFor="framework">Framework</FieldLabel>
+            <Select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a framework" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="item">Item</SelectItem>
+              </SelectContent>
+            </Select>
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="description">Description</FieldLabel>
+            <Textarea
+              id="description"
+              placeholder="Your code description..."
+              rows={4}
+            />
+          </Field>
+          <Field orientation="horizontal">
+            <Button type="submit">Add</Button>
+            <Button variant="outline" type="button">
+              Cancel
+            </Button>
+          </Field>
+        </FieldGroup>
+      </FieldSet>
+    </form>
   )
 }
