@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Dialog,
   DialogTrigger,
@@ -17,12 +19,13 @@ import {
 import { Input } from './ui/input'
 import { Textarea } from './ui/textarea'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from './ui/select'
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from './ui/combobox'
 
 const AddSnippetDialog = () => {
   return (
@@ -44,10 +47,16 @@ const AddSnippetDialog = () => {
 }
 
 export default AddSnippetDialog
+function onSubmit() {
+  console.log('#TODO')
+}
 
 const AddSnippetForm = () => {
+  const languages = ['Javascript', 'C#', 'C++']
+  const frameworks = ['Next.js', 'Angular', 'Nuxt.js']
+
   return (
-    <form>
+    <form onSubmit={onSubmit}>
       <FieldSet>
         <FieldLegend>Add New Snippet</FieldLegend>
         <FieldGroup>
@@ -61,25 +70,35 @@ const AddSnippetForm = () => {
           </Field>
           <Field className="w-full">
             <FieldLabel htmlFor="language">Language</FieldLabel>
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a language" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="item">Item</SelectItem>
-              </SelectContent>
-            </Select>
+            <Combobox items={languages}>
+              <ComboboxInput placeholder="Select a language" />
+              <ComboboxContent>
+                <ComboboxEmpty>No languages found.</ComboboxEmpty>
+                <ComboboxList>
+                  {(item) => (
+                    <ComboboxItem key={item} value={item}>
+                      {item}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
           </Field>
           <Field className="w-full">
-            <FieldLabel htmlFor="framework">Framework</FieldLabel>
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a framework" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="item">Item</SelectItem>
-              </SelectContent>
-            </Select>
+            <FieldLabel htmlFor="framework">Frameworks</FieldLabel>
+            <Combobox items={frameworks}>
+              <ComboboxInput placeholder="Select a framework" />
+              <ComboboxContent>
+                <ComboboxEmpty>No frameworks found.</ComboboxEmpty>
+                <ComboboxList>
+                  {(item) => (
+                    <ComboboxItem key={item} value={item}>
+                      {item}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
           </Field>
           <Field>
             <FieldLabel htmlFor="description">Description</FieldLabel>
