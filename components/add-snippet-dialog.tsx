@@ -1,5 +1,6 @@
 'use client'
 
+import { PlusIcon, XIcon } from 'lucide-react'
 import {
   Dialog,
   DialogTrigger,
@@ -26,6 +27,7 @@ import {
   ComboboxItem,
   ComboboxList,
 } from './ui/combobox'
+import { FRAMEWORKS, LANGUAGES } from '@/lib/languages'
 
 const AddSnippetDialog = () => {
   return (
@@ -33,7 +35,7 @@ const AddSnippetDialog = () => {
       <DialogTrigger asChild>
         <Button>Add Snippet</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="bg-primary-foreground">
         <DialogHeader>
           <DialogTitle className="sr-only">Snippet Management</DialogTitle>
           <DialogDescription className="sr-only">
@@ -52,9 +54,6 @@ function onSubmit() {
 }
 
 const AddSnippetForm = () => {
-  const languages = ['Javascript', 'C#', 'C++']
-  const frameworks = ['Next.js', 'Angular', 'Nuxt.js']
-
   return (
     <form onSubmit={onSubmit}>
       <FieldSet>
@@ -70,7 +69,7 @@ const AddSnippetForm = () => {
           </Field>
           <Field className="w-full">
             <FieldLabel htmlFor="language">Language</FieldLabel>
-            <Combobox items={languages}>
+            <Combobox items={LANGUAGES}>
               <ComboboxInput placeholder="Select a language" />
               <ComboboxContent>
                 <ComboboxEmpty>No languages found.</ComboboxEmpty>
@@ -86,7 +85,7 @@ const AddSnippetForm = () => {
           </Field>
           <Field className="w-full">
             <FieldLabel htmlFor="framework">Frameworks</FieldLabel>
-            <Combobox items={frameworks}>
+            <Combobox items={FRAMEWORKS}>
               <ComboboxInput placeholder="Select a framework" />
               <ComboboxContent>
                 <ComboboxEmpty>No frameworks found.</ComboboxEmpty>
@@ -108,10 +107,14 @@ const AddSnippetForm = () => {
               rows={4}
             />
           </Field>
-          <Field orientation="horizontal">
-            <Button type="submit">Add</Button>
+          <Field orientation="horizontal" className="flex justify-end">
             <Button variant="outline" type="button">
               Cancel
+              <XIcon className="w-3" />
+            </Button>
+            <Button type="submit" className="bg-chart-3 text-white">
+              Add
+              <PlusIcon className="w-3" />
             </Button>
           </Field>
         </FieldGroup>
