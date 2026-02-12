@@ -1,6 +1,6 @@
 'use client'
 
-import { PlusIcon, XIcon } from 'lucide-react'
+import { SaveIcon, XIcon } from 'lucide-react'
 import {
   Dialog,
   DialogTrigger,
@@ -113,8 +113,8 @@ const AddSnippetForm = () => {
               <XIcon className="w-3" />
             </Button>
             <Button type="submit" className="bg-chart-3 text-white">
-              Add
-              <PlusIcon className="w-3" />
+              Save
+              <SaveIcon className="w-3" />
             </Button>
           </Field>
         </FieldGroup>
