@@ -48,6 +48,48 @@ const AddSnippetDialog = () => {
   )
 }
 
+const LanguageCombobox = () => {
+  return (
+    <Field className="w-full">
+      <FieldLabel htmlFor="language">Language</FieldLabel>
+      <Combobox items={LANGUAGES}>
+        <ComboboxInput placeholder="Select a language" />
+        <ComboboxContent>
+          <ComboboxEmpty>No languages found.</ComboboxEmpty>
+          <ComboboxList>
+            {(item) => (
+              <ComboboxItem key={item} value={item}>
+                {item}
+              </ComboboxItem>
+            )}
+          </ComboboxList>
+        </ComboboxContent>
+      </Combobox>
+    </Field>
+  )
+}
+
+const FrameworkCombobox = () => {
+  return (
+    <Field className="w-full">
+      <FieldLabel htmlFor="framework">Frameworks</FieldLabel>
+      <Combobox items={FRAMEWORKS}>
+        <ComboboxInput placeholder="Select a framework" />
+        <ComboboxContent>
+          <ComboboxEmpty>No frameworks found.</ComboboxEmpty>
+          <ComboboxList>
+            {(item) => (
+              <ComboboxItem key={item} value={item}>
+                {item}
+              </ComboboxItem>
+            )}
+          </ComboboxList>
+        </ComboboxContent>
+      </Combobox>
+    </Field>
+  )
+}
+
 export default AddSnippetDialog
 function onSubmit() {
   console.log('#TODO')
@@ -67,38 +109,8 @@ const AddSnippetForm = () => {
             <FieldLabel htmlFor="code">Your code </FieldLabel>
             <Textarea id="code" placeholder="Paste your code snippet" />
           </Field>
-          <Field className="w-full">
-            <FieldLabel htmlFor="language">Language</FieldLabel>
-            <Combobox items={LANGUAGES}>
-              <ComboboxInput placeholder="Select a language" />
-              <ComboboxContent>
-                <ComboboxEmpty>No languages found.</ComboboxEmpty>
-                <ComboboxList>
-                  {(item) => (
-                    <ComboboxItem key={item} value={item}>
-                      {item}
-                    </ComboboxItem>
-                  )}
-                </ComboboxList>
-              </ComboboxContent>
-            </Combobox>
-          </Field>
-          <Field className="w-full">
-            <FieldLabel htmlFor="framework">Frameworks</FieldLabel>
-            <Combobox items={FRAMEWORKS}>
-              <ComboboxInput placeholder="Select a framework" />
-              <ComboboxContent>
-                <ComboboxEmpty>No frameworks found.</ComboboxEmpty>
-                <ComboboxList>
-                  {(item) => (
-                    <ComboboxItem key={item} value={item}>
-                      {item}
-                    </ComboboxItem>
-                  )}
-                </ComboboxList>
-              </ComboboxContent>
-            </Combobox>
-          </Field>
+          <LanguageCombobox />
+          <FrameworkCombobox />
           <Field>
             <FieldLabel htmlFor="description">Description</FieldLabel>
             <Textarea
