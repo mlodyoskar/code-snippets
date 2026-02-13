@@ -19,15 +19,8 @@ import {
 } from './ui/field'
 import { Input } from './ui/input'
 import { Textarea } from './ui/textarea'
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-} from './ui/combobox'
-import { FRAMEWORKS, LANGUAGES } from '@/lib/languages'
+import LanguageCombobox from './language-combobox'
+import FrameworkCombobox from './framework-combobox'
 
 const AddSnippetDialog = () => {
   return (
@@ -45,48 +38,6 @@ const AddSnippetDialog = () => {
         <AddSnippetForm />
       </DialogContent>
     </Dialog>
-  )
-}
-
-const LanguageCombobox = () => {
-  return (
-    <Field className="w-full">
-      <FieldLabel htmlFor="language">Language</FieldLabel>
-      <Combobox items={LANGUAGES}>
-        <ComboboxInput placeholder="Select a language" />
-        <ComboboxContent>
-          <ComboboxEmpty>No languages found.</ComboboxEmpty>
-          <ComboboxList>
-            {(item) => (
-              <ComboboxItem key={item} value={item}>
-                {item}
-              </ComboboxItem>
-            )}
-          </ComboboxList>
-        </ComboboxContent>
-      </Combobox>
-    </Field>
-  )
-}
-
-const FrameworkCombobox = () => {
-  return (
-    <Field className="w-full">
-      <FieldLabel htmlFor="framework">Frameworks</FieldLabel>
-      <Combobox items={FRAMEWORKS}>
-        <ComboboxInput placeholder="Select a framework" />
-        <ComboboxContent>
-          <ComboboxEmpty>No frameworks found.</ComboboxEmpty>
-          <ComboboxList>
-            {(item) => (
-              <ComboboxItem key={item} value={item}>
-                {item}
-              </ComboboxItem>
-            )}
-          </ComboboxList>
-        </ComboboxContent>
-      </Combobox>
-    </Field>
   )
 }
 
