@@ -1,3 +1,6 @@
+'use client'
+
+import { SaveIcon, XIcon } from 'lucide-react'
 import {
   Dialog,
   DialogTrigger,
@@ -8,7 +11,6 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from './ui/button'
 import {
-  FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldLegend,
@@ -17,6 +19,8 @@ import {
 } from './ui/field'
 import { Input } from './ui/input'
 import { Textarea } from './ui/textarea'
+import LanguageCombobox from './language-combobox'
+import FrameworkCombobox from './framework-combobox'
 
 const AddSnippetDialog = () => {
   return (
@@ -24,9 +28,9 @@ const AddSnippetDialog = () => {
       <DialogTrigger asChild>
         <Button>Add Snippet</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="bg-primary-foreground">
         <DialogHeader>
-          <DialogTitle>Snippet Management</DialogTitle>
+          <DialogTitle className="sr-only">Snippet Management</DialogTitle>
           <DialogDescription className="sr-only">
             Add your snippets, press add when you are done.
           </DialogDescription>
@@ -38,31 +42,46 @@ const AddSnippetDialog = () => {
 }
 
 export default AddSnippetDialog
+function onSubmit() {
+  console.log('#TODO')
+}
 
 const AddSnippetForm = () => {
   return (
-    <FieldSet>
-      <FieldLegend>Add New Snippet</FieldLegend>
-      <FieldGroup>
-        <Field>
-          <FieldLabel htmlFor="title">Title: </FieldLabel>
-          <Input id="title" type="text" placeholder="Snippet title" />
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="code">Your code: </FieldLabel>
-          <Textarea id="code" placeholder="Paste your code snippet" />
-        </Field>
-        <p>select</p>
-        <p>select</p>
-        <Field>
-          <FieldLabel htmlFor="description">Description</FieldLabel>
-          <Textarea
-            id="description"
-            placeholder="Your code description..."
-            rows={4}
-          />
-        </Field>
-      </FieldGroup>
-    </FieldSet>
+    <form onSubmit={onSubmit}>
+      <FieldSet>
+        <FieldLegend>Add New Snippet</FieldLegend>
+        <FieldGroup>
+          <Field>
+            <FieldLabel htmlFor="title">Title </FieldLabel>
+            <Input id="title" type="text" placeholder="Snippet title" />
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="code">Your code </FieldLabel>
+            <Textarea id="code" placeholder="Paste your code snippet" />
+          </Field>
+          <LanguageCombobox />
+          <FrameworkCombobox />
+          <Field>
+            <FieldLabel htmlFor="description">Description</FieldLabel>
+            <Textarea
+              id="description"
+              placeholder="Your code description..."
+              rows={4}
+            />
+          </Field>
+          <Field orientation="horizontal" className="flex justify-end">
+            <Button variant="outline" type="button">
+              Cancel
+              <XIcon className="w-3" />
+            </Button>
+            <Button type="submit" className="bg-chart-3 text-white">
+              Save
+              <SaveIcon className="w-3" />
+            </Button>
+          </Field>
+        </FieldGroup>
+      </FieldSet>
+    </form>
   )
 }
