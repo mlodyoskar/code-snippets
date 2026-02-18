@@ -12,7 +12,7 @@ import {
 import Image from 'next/image'
 import { getLanguageIcon } from '@/lib/languages'
 
-const LanguageCombobox = () => {
+const LanguageCombobox = ({ name }: { name?: string }) => {
   const [value, setValue] = React.useState<string | null>(null)
 
   return (
@@ -50,7 +50,8 @@ const LanguageCombobox = () => {
             )}
           </ComboboxList>
         </ComboboxContent>
-      </Combobox>
+    </Combobox>
+    <input type="hidden" name={name} value={value || ''} />
     </Field>
   )
 }

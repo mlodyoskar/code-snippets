@@ -12,7 +12,7 @@ import {
 import Image from 'next/image'
 import { getFrameworkIcon } from '@/lib/languages'
 
-const FrameworkCombobox = () => {
+const FrameworkCombobox = ({ name }: { name?: string }) => {
   const [value, setValue] = React.useState<string | null>(null)
 
   return (
@@ -50,7 +50,8 @@ const FrameworkCombobox = () => {
             )}
           </ComboboxList>
         </ComboboxContent>
-      </Combobox>
+    </Combobox>
+    <input type="hidden" name={name} value={value || ''} />
     </Field>
   )
 }
