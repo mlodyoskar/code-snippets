@@ -8,6 +8,7 @@ import {
   getFrameworkLabel,
   getFrameworkIcon,
 } from '@/lib/languages'
+import { DeleteDialog } from '@/components/delete-dialog'
 
 type Props = {
   params: Promise<{ snippetId: string }>
@@ -34,51 +35,56 @@ export default async function SnippetPage({ params }: Props) {
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
           {snippet.title}
         </h1>
-
         <div className="flex flex-wrap items-center gap-3">
-          {snippet.language && (
-            <Badge
-              variant="secondary"
-              className="flex h-auto items-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-medium"
-            >
-              <img
-                src={getLanguageIcon(snippet.language)}
-                alt={snippet.language}
-                className="size-4"
-              />
-              {getLanguageLabel(snippet.language)}
-            </Badge>
-          )}
+          <div className="flex w-full justify-between">
+            <div className="flex flex-wrap items-center gap-3">
+              {snippet.language && (
+                <Badge
+                  variant="secondary"
+                  className="flex h-auto items-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-medium"
+                >
+                  <img
+                    src={getLanguageIcon(snippet.language)}
+                    alt={snippet.language}
+                    className="size-4"
+                  />
+                  {getLanguageLabel(snippet.language)}
+                </Badge>
+              )}
 
-          {snippet.framework && (
-            <Badge
-              variant="secondary"
-              className="flex h-auto items-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-medium"
-            >
-              <img
-                src={getFrameworkIcon(snippet.framework)}
-                alt={snippet.framework}
-                className="size-4"
-              />
-              {getFrameworkLabel(snippet.framework)}
-            </Badge>
-          )}
-
-          {snippet.createdAt && (
-            <span className="text-sm text-muted-foreground">
-              {new Date(snippet.createdAt).toLocaleDateString()}
-            </span>
-          )}
+              {snippet.framework && (
+                <Badge
+                  variant="secondary"
+                  className="flex h-auto items-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-medium"
+                >
+                  <img
+                    src={getFrameworkIcon(snippet.framework)}
+                    alt={snippet.framework}
+                    className="size-4"
+                  />
+                  {getFrameworkLabel(snippet.framework)}
+                </Badge>
+              )}
+              {snippet.createdAt && (
+                <span className="text-muted-foreground text-sm">
+                  {new Date(snippet.createdAt).toLocaleDateString()}
+                </span>
+              )}
+            </div>
+            <div>
+              <DeleteDialog snippetId={snippet.id} />
+            </div>
+          </div>
         </div>
 
         {snippet.description && (
-          <p className="max-w-3xl text-lg leading-relaxed text-balance mt-4 text-muted-foreground">
+          <p className="text-muted-foreground mt-4 max-w-3xl text-lg leading-relaxed text-balance">
             {snippet.description}
           </p>
         )}
       </header>
 
-      <section className="rounded-xl border shadow-sm overflow-hidden bg-[#24292e]">
+      <section className="overflow-hidden rounded-xl border bg-[#24292e] shadow-sm">
         <CodeBlock code={snippet.code} language={snippet.language} />
       </section>
     </div>

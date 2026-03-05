@@ -5,6 +5,7 @@ import { db } from '@/db'
 import { snippetsTable, usersTable } from '@/db/schema'
 import { createSnippetSchema } from '@/lib/schemas'
 import { z } from 'zod'
+import { eq } from 'drizzle-orm'
 
 export type ActionState = {
   success: boolean
@@ -76,5 +77,16 @@ export async function createSnippetAction(
       success: false,
       message: 'Database error: Failed to create snippet',
     }
+  }
+}
+
+export async function deleteSnippetAction(id: number): Promise<{ success: boolean; message: string }> {
+  try {
+    await db.delete(snippetsTable).where(eq(snippetsTable.id, id))
+    revalidatePath('/')
+    return { success: true, message: 'Snippet deleted successfully' }
+  } catch (error) {
+    console.error('Database error:', error)
+    return { success: false, message: 'Database error: Failed to delete snippet' }
   }
 }
