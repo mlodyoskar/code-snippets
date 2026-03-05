@@ -1,60 +1,86 @@
-import { getSnippetById } from '@/lib/queries'
-import {
-  getLanguageIcon,
-  getLanguageLabel,
-  getFrameworkIcon,
-  getFrameworkLabel,
-} from '@/lib/languages'
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
+import { getSnippetById } from '@/lib/queries'
+import { CodeBlock } from '@/components/code-block'
+import { Badge } from '@/components/ui/badge'
+import {
+  getLanguageLabel,
+  getLanguageIcon,
+  getFrameworkLabel,
+  getFrameworkIcon,
+} from '@/lib/languages'
 
-type SnippetPageProps = {
+type Props = {
   params: Promise<{ snippetId: string }>
 }
 
-const SnippetPage = async ({ params }: SnippetPageProps) => {
+export default async function SnippetPage({ params }: Props) {
   const { snippetId } = await params
-  const [snippet] = await getSnippetById(Number(snippetId))
+  const parsedId = parseInt(snippetId, 10)
 
-  if (!snippet) notFound()
+  if (isNaN(parsedId)) {
+    return notFound()
+  }
 
-  const languageIconPath = getLanguageIcon(snippet.language)
-  const languageLabel = getLanguageLabel(snippet.language)
+  const data = await getSnippetById(parsedId)
+  const snippet = data[0]
+
+  if (!snippet) {
+    return notFound()
+  }
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold">{snippet.title}</h1>
-      <div className="text-muted-foreground flex items-center gap-2 text-sm">
-        <Image
-          src={languageIconPath}
-          alt={languageLabel}
-          width={16}
-          height={16}
-          className="size-4"
-        />
-        <span>{languageLabel}</span>
-        {snippet.framework && (
-          <>
-            <span>•</span>
-            <Image
-              src={getFrameworkIcon(snippet.framework)}
-              alt={getFrameworkLabel(snippet.framework)}
-              width={16}
-              height={16}
-              className="size-4"
-            />
-            <span>{getFrameworkLabel(snippet.framework)}</span>
-          </>
+    <div className="mx-auto w-full max-w-5xl space-y-8 p-4 md:p-6 lg:p-8">
+      <header className="space-y-4">
+        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+          {snippet.title}
+        </h1>
+
+        <div className="flex flex-wrap items-center gap-3">
+          {snippet.language && (
+            <Badge
+              variant="secondary"
+              className="flex h-auto items-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-medium"
+            >
+              <img
+                src={getLanguageIcon(snippet.language)}
+                alt={snippet.language}
+                className="size-4"
+              />
+              {getLanguageLabel(snippet.language)}
+            </Badge>
+          )}
+
+          {snippet.framework && (
+            <Badge
+              variant="secondary"
+              className="flex h-auto items-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-medium"
+            >
+              <img
+                src={getFrameworkIcon(snippet.framework)}
+                alt={snippet.framework}
+                className="size-4"
+              />
+              {getFrameworkLabel(snippet.framework)}
+            </Badge>
+          )}
+
+          {snippet.createdAt && (
+            <span className="text-sm text-muted-foreground">
+              {new Date(snippet.createdAt).toLocaleDateString()}
+            </span>
+          )}
+        </div>
+
+        {snippet.description && (
+          <p className="max-w-3xl text-lg leading-relaxed text-balance mt-4 text-muted-foreground">
+            {snippet.description}
+          </p>
         )}
-      </div>
-      {snippet.description && (
-        <p className="text-muted-foreground">{snippet.description}</p>
-      )}
-      <pre className="bg-muted overflow-auto rounded-lg p-4">
-        <code>{snippet.code}</code>
-      </pre>
+      </header>
+
+      <section className="rounded-xl border shadow-sm overflow-hidden bg-[#24292e]">
+        <CodeBlock code={snippet.code} language={snippet.language} />
+      </section>
     </div>
   )
 }
-
-export default SnippetPage
