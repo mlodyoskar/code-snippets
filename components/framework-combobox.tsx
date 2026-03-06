@@ -12,8 +12,14 @@ import {
 import Image from 'next/image'
 import { getFrameworkIcon } from '@/lib/languages'
 
-const FrameworkCombobox = ({ name }: { name?: string }) => {
-  const [value, setValue] = React.useState<string | null>(null)
+const FrameworkCombobox = ({
+  name,
+  defaultValue,
+}: {
+  name?: string
+  defaultValue?: string | null
+}) => {
+  const [value, setValue] = React.useState<string | null>(defaultValue || null)
 
   return (
     <Field className="w-full">
@@ -50,8 +56,8 @@ const FrameworkCombobox = ({ name }: { name?: string }) => {
             )}
           </ComboboxList>
         </ComboboxContent>
-    </Combobox>
-    <input type="hidden" name={name} value={value || ''} />
+      </Combobox>
+      <input type="hidden" name={name} value={value || ''} />
     </Field>
   )
 }

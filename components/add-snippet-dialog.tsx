@@ -26,6 +26,7 @@ import { Textarea } from './ui/textarea'
 import LanguageCombobox from './language-combobox'
 import FrameworkCombobox from './framework-combobox'
 import { createSnippetAction } from '@/app/actions'
+import { Snippet } from '@/db/schema'
 
 const initialState = {
   success: false,
@@ -33,22 +34,32 @@ const initialState = {
   errors: {},
 }
 
-const AddSnippetDialog = () => {
+const AddSnippetDialog = ({
+  editMode = false,
+  snippet,
+}: {
+  editMode?: boolean
+  snippet?: Snippet
+}) => {
   const [open, setOpen] = useState(false)
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Add Snippet</Button>
+        <Button variant={editMode ? 'outline' : 'default'}>
+          {editMode ? 'Edit Snippet' : 'Add Snippet'}
+        </Button>
       </DialogTrigger>
       <DialogContent className="bg-primary-foreground sm:max-w-xl">
         <DialogHeader>
           <DialogTitle className="sr-only">Snippet Management</DialogTitle>
           <DialogDescription className="sr-only">
-            Add your snippets, press add when you are done.
+            {editMode
+              ? 'Edit your snippet'
+              : 'Add your snippet, press add when you are done.'}
           </DialogDescription>
         </DialogHeader>
-        <AddSnippetForm setOpen={setOpen} />
+        <AddSnippetForm setOpen={setOpen} snippet={snippet} />
       </DialogContent>
     </Dialog>
   )
@@ -58,8 +69,10 @@ export default AddSnippetDialog
 
 const AddSnippetForm = ({
   setOpen,
+  snippet,
 }: {
   setOpen: (open: boolean) => void
+  snippet?: Snippet
 }) => {
   const router = useRouter()
   const [state, action, isPending] = useActionState(
@@ -75,14 +88,16 @@ const AddSnippetForm = ({
         router.push(`/s/${state.snippetId}`)
       }
     } else if (state.message && !state.success && state.message !== '') {
-        toast.error(state.message)
+      toast.error(state.message)
     }
   }, [state, setOpen, router])
 
   return (
     <form action={action}>
       <FieldSet>
-        <FieldLegend>Add New Snippet</FieldLegend>
+        <FieldLegend>
+          {snippet ? 'Edit Snippet' : 'Add New Snippet'}
+        </FieldLegend>
         <FieldGroup>
           <Field>
             <FieldLabel htmlFor="title">Title</FieldLabel>
@@ -92,38 +107,50 @@ const AddSnippetForm = ({
               type="text"
               placeholder="Snippet title"
               disabled={isPending}
+              defaultValue={snippet?.title}
             />
             {state.errors?.title && (
               <FieldError>{state.errors.title[0]}</FieldError>
             )}
           </Field>
-          
+
           <Field>
             <FieldLabel htmlFor="code">Your code</FieldLabel>
             <Textarea
               id="code"
               name="code"
               placeholder="Paste your code snippet"
-              className="font-mono min-h-[200px] max-h-[400px] overflow-auto whitespace-pre"
+              className="max-h-[400px] min-h-[200px] overflow-auto font-mono whitespace-pre"
               disabled={isPending}
+              defaultValue={snippet?.code}
             />
             {state.errors?.code && (
               <FieldError>{state.errors.code[0]}</FieldError>
             )}
           </Field>
-          
+
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-                <LanguageCombobox name="language" />
-                {state.errors?.language && (
-                  <FieldError className="mt-2">{state.errors.language[0]}</FieldError>
-                )}
+              <LanguageCombobox
+                name="language"
+                defaultValue={snippet?.language}
+              />
+              {state.errors?.language && (
+                <FieldError className="mt-2">
+                  {state.errors.language[0]}
+                </FieldError>
+              )}
             </div>
             <div>
-                <FrameworkCombobox name="framework" />
-                 {state.errors?.framework && (
-                  <FieldError className="mt-2">{state.errors.framework[0]}</FieldError>
-                )}
+              <FrameworkCombobox
+                name="framework"
+                defaultValue={snippet?.framework}
+              />
+              {state.errors?.framework && (
+                <FieldError className="mt-2">
+                  {state.errors.framework[0]}
+                </FieldError>
+              )}
             </div>
           </div>
 
@@ -135,6 +162,7 @@ const AddSnippetForm = ({
               placeholder="Your code description..."
               rows={4}
               disabled={isPending}
+              defaultValue={snippet?.description ?? ''}
             />
             {state.errors?.description && (
               <FieldError>{state.errors.description[0]}</FieldError>

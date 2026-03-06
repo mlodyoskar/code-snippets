@@ -9,6 +9,7 @@ import {
   getFrameworkIcon,
 } from '@/lib/languages'
 import { DeleteDialog } from '@/components/delete-dialog'
+import AddSnippetDialog from '@/components/add-snippet-dialog'
 
 type Props = {
   params: Promise<{ snippetId: string }>
@@ -71,7 +72,8 @@ export default async function SnippetPage({ params }: Props) {
                 </span>
               )}
             </div>
-            <div>
+            <div className="flex flex-wrap gap-2">
+              <AddSnippetDialog editMode={true} snippet={snippet} />
               <DeleteDialog snippetId={snippet.id} />
             </div>
           </div>

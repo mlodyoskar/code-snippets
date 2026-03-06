@@ -40,3 +40,5 @@ export const snippetsTable = pgTable(
     index('framework_idx').on(table.framework),
   ]
 )
+
+export type Snippet = typeof snippetsTable.$inferSelect
