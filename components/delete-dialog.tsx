@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { deleteSnippetAction } from '@/app/actions'
+import { toast } from 'sonner'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,9 +27,11 @@ export function DeleteDialog({ snippetId }: { snippetId: number }) {
     setIsDeleting(false)
 
     if (result.success) {
+      toast.success(result.message)
       router.push('/')
       router.refresh()
     } else {
+      toast.error(result.message)
       console.error(result.message)
     }
   }

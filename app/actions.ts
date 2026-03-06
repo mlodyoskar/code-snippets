@@ -131,6 +131,9 @@ export async function editSnippetAction(
       })
       .where(eq(snippetsTable.id, id))
 
+    revalidatePath('/')
+    revalidatePath(`/s/${id}`)
+
     return {
       success: true,
       message: 'Snippet edited successfully',
