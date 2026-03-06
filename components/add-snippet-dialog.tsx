@@ -25,7 +25,7 @@ import { Input } from './ui/input'
 import { Textarea } from './ui/textarea'
 import LanguageCombobox from './language-combobox'
 import FrameworkCombobox from './framework-combobox'
-import { createSnippetAction } from '@/app/actions'
+import { createSnippetAction, editSnippetAction } from '@/app/actions'
 import { Snippet } from '@/db/schema'
 
 const initialState = {
@@ -75,10 +75,12 @@ const AddSnippetForm = ({
   snippet?: Snippet
 }) => {
   const router = useRouter()
-  const [state, action, isPending] = useActionState(
-    createSnippetAction,
-    initialState
-  )
+
+  const actionToUse = snippet
+    ? editSnippetAction.bind(null, snippet.id)
+    : createSnippetAction
+
+  const [state, action, isPending] = useActionState(actionToUse, initialState)
 
   useEffect(() => {
     if (state.success) {
