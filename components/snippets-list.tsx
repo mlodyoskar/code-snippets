@@ -69,6 +69,7 @@ export const SnippetsList = () => {
           </SidebarMenuItem>
         )
       })}
+      {snippets.length === 0 && <div className='flex justify-center'><p className='font-semibold text-muted-foreground'>No snippets found</p></div> }
     </SidebarMenu>
   )
 }

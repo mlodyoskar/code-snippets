@@ -36,7 +36,7 @@ const SearchInput = () => {
     <div className="relative">
       <SearchIcon className="text-muted-foreground absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
       <Input
-        placeholder="Snippet title..."
+        placeholder="Snippet title"
         className="pl-8"
         value={searchTerm}
         onChange={(e) => {
