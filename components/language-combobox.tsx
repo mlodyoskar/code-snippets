@@ -14,6 +14,7 @@ import {
 import Image from 'next/image'
 import { getLanguageIcon } from '@/lib/languages'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 
 const LanguageCombobox = ({
   name,
@@ -31,6 +32,12 @@ const LanguageCombobox = ({
   const [value, setValue] = React.useState<string | null>(
     (updateUrl ? searchParams.get('lang') : defaultValue) || null
   )
+
+  useEffect(() => {
+    if (updateUrl && !searchParams.has('lang')) {
+      setValue(null)
+    }
+  }, [searchParams, updateUrl])
 
   const handleSelect = (newValue: string | null) => {
     setValue(newValue)

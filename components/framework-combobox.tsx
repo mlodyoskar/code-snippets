@@ -14,6 +14,7 @@ import {
 import Image from 'next/image'
 import { getFrameworkIcon } from '@/lib/languages'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 
 const FrameworkCombobox = ({
   name,
@@ -31,6 +32,12 @@ const FrameworkCombobox = ({
   const [value, setValue] = React.useState<string | null>(
     (updateUrl ? searchParams.get('framework') : defaultValue) || null
   )
+
+  useEffect(() => {
+    if (updateUrl && !searchParams.has('framework')) {
+      setValue(null)
+    }
+  }, [searchParams, updateUrl])
 
   const handleSelect = (newValue: string | null) => {
     setValue(newValue)

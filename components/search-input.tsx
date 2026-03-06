@@ -4,7 +4,7 @@ import { SearchIcon } from 'lucide-react'
 import { Input } from './ui/input'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useDebouncedCallback } from 'use-debounce'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const SearchInput = () => {
   const router = useRouter()
@@ -12,6 +12,13 @@ const SearchInput = () => {
   const searchParams = useSearchParams()
 
   const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '')
+
+  useEffect(() => {
+    const currentQ = searchParams.get('q')
+    if (!currentQ && searchTerm !== '') {
+      setSearchTerm('')
+    }
+  }, [searchParams])
 
   const handleDebouncedSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams)
