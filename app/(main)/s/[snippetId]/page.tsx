@@ -10,6 +10,7 @@ import {
 } from '@/lib/languages'
 import { DeleteDialog } from '@/components/delete-dialog'
 import AddSnippetDialog from '@/components/add-snippet-dialog'
+import Image from 'next/image'
 
 type Props = {
   params: Promise<{ snippetId: string }>
@@ -44,10 +45,12 @@ export default async function SnippetPage({ params }: Props) {
                   variant="secondary"
                   className="flex h-auto items-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-medium"
                 >
-                  <img
+                  <Image
                     src={getLanguageIcon(snippet.language)}
                     alt={snippet.language}
                     className="size-4"
+                    width={16}
+                    height={16}
                   />
                   {getLanguageLabel(snippet.language)}
                 </Badge>
@@ -58,9 +61,11 @@ export default async function SnippetPage({ params }: Props) {
                   variant="secondary"
                   className="flex h-auto items-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-medium"
                 >
-                  <img
+                  <Image
                     src={getFrameworkIcon(snippet.framework)}
                     alt={snippet.framework}
+                    width={16}
+                    height={16}
                     className="size-4"
                   />
                   {getFrameworkLabel(snippet.framework)}

@@ -13,10 +13,11 @@ import { getSnippets } from '@/lib/queries'
 import { Skeleton } from './ui/skeleton'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { Snippet } from '@/db/schema'
 
 export const SnippetsList = () => {
   const searchParams = useSearchParams()
-  const [snippets, setSnippets] = useState<any[]>([])
+  const [snippets, setSnippets] = useState<Snippet[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -69,7 +70,13 @@ export const SnippetsList = () => {
           </SidebarMenuItem>
         )
       })}
-      {snippets.length === 0 && <div className='flex justify-center'><p className='font-semibold text-muted-foreground'>No snippets found</p></div> }
+      {snippets.length === 0 && (
+        <div className="flex justify-center">
+          <p className="text-muted-foreground font-semibold">
+            No snippets found
+          </p>
+        </div>
+      )}
     </SidebarMenu>
   )
 }
