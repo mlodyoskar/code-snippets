@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import { LANGUAGES, type Language } from '@/lib/languages'
 import { Field, FieldLabel } from './ui/field'
@@ -11,22 +13,46 @@ import {
 } from './ui/combobox'
 import Image from 'next/image'
 import { getLanguageIcon } from '@/lib/languages'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
 const LanguageCombobox = ({
   name,
   defaultValue,
+  updateUrl,
 }: {
   name?: string
   defaultValue?: string | null
+  updateUrl?: boolean
 }) => {
-  const [value, setValue] = React.useState<string | null>(defaultValue || null)
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const [value, setValue] = React.useState<string | null>(
+    (updateUrl ? searchParams.get('lang') : defaultValue) || null
+  )
+
+  const handleSelect = (newValue: string | null) => {
+    setValue(newValue)
+    if (updateUrl) {
+      const params = new URLSearchParams(searchParams)
+
+      if (newValue) {
+        params.set('lang', newValue)
+      } else {
+        params.delete('lang')
+      }
+
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+    }
+  }
 
   return (
     <Field className="w-full">
-      <FieldLabel htmlFor="language">Language</FieldLabel>
-      <Combobox items={LANGUAGES} value={value} onValueChange={setValue}>
+      {!updateUrl && <FieldLabel htmlFor="language">Language</FieldLabel>}
+      <Combobox items={LANGUAGES} value={value} onValueChange={handleSelect}>
         <ComboboxInput
-          placeholder="Select a language"
+          placeholder={updateUrl ? 'Language' : 'Select a language'}
           startSlot={
             value && (
               <Image
@@ -57,7 +83,7 @@ const LanguageCombobox = ({
           </ComboboxList>
         </ComboboxContent>
       </Combobox>
-      <input type="hidden" name={name} value={value || ''} />
+      {!updateUrl && <input type="hidden" name={name} value={value || ''} />}
     </Field>
   )
 }

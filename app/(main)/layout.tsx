@@ -19,6 +19,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import Image from 'next/image'
 import Link from 'next/link'
 import SearchInput from '@/components/search-input'
+import LanguageCombobox from '@/components/language-combobox'
+import FrameworkCombobox from '@/components/framework-combobox'
 
 type MainLayoutProps = {
   children: React.ReactNode
@@ -78,7 +80,13 @@ const MainLayout = (prop: MainLayoutProps) => {
           <SidebarGroup>
             <SidebarGroupLabel>Search snippets</SidebarGroupLabel>
             <SidebarGroupContent>
-              <SearchInput />
+              <div className="mb-2 w-full">
+                <SearchInput />
+              </div>
+              <div className="flex">
+                <LanguageCombobox updateUrl={true} />
+                <FrameworkCombobox updateUrl={true} />
+              </div>
             </SidebarGroupContent>
           </SidebarGroup>
           <SidebarGroup>
