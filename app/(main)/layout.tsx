@@ -18,6 +18,7 @@ import { getLanguageIcon, getFrameworkIcon } from '@/lib/languages'
 import { Skeleton } from '@/components/ui/skeleton'
 import Image from 'next/image'
 import Link from 'next/link'
+import SearchInput from '@/components/search-input'
 
 type MainLayoutProps = {
   children: React.ReactNode
@@ -74,6 +75,12 @@ const MainLayout = (prop: MainLayoutProps) => {
           <h1 className="px-2 text-lg font-semibold">{APP_NAME}</h1>
         </SidebarHeader>
         <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Search snippets</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SearchInput />
+            </SidebarGroupContent>
+          </SidebarGroup>
           <SidebarGroup>
             <SidebarGroupLabel>Snippets</SidebarGroupLabel>
             <SidebarGroupContent>
