@@ -5,6 +5,7 @@ import { db } from '@/db'
 import { snippetsTable, usersTable } from '@/db/schema'
 import { createSnippetSchema } from '@/lib/schemas'
 import { z } from 'zod'
+import { eq } from 'drizzle-orm'
 
 export type ActionState = {
   success: boolean
@@ -24,7 +25,7 @@ export async function createSnippetAction(
       title: formData.get('title'),
       code: formData.get('code'),
       language: formData.get('language'),
-      framework: formData.get('framework') || undefined, 
+      framework: formData.get('framework') || undefined,
       description: formData.get('description'),
     }
 
@@ -75,6 +76,74 @@ export async function createSnippetAction(
     return {
       success: false,
       message: 'Database error: Failed to create snippet',
+    }
+  }
+}
+
+export async function deleteSnippetAction(
+  id: number
+): Promise<{ success: boolean; message: string }> {
+  try {
+    await db.delete(snippetsTable).where(eq(snippetsTable.id, id))
+    revalidatePath('/')
+    return { success: true, message: 'Snippet deleted successfully' }
+  } catch (error) {
+    console.error('Database error:', error)
+    return {
+      success: false,
+      message: 'Database error: Failed to delete snippet',
+    }
+  }
+}
+
+export async function editSnippetAction(
+  id: number,
+  prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  try {
+    const rawData = {
+      title: formData.get('title'),
+      code: formData.get('code'),
+      language: formData.get('language'),
+      framework: formData.get('framework') || undefined,
+      description: formData.get('description'),
+    }
+
+    const validatedFields = createSnippetSchema.safeParse(rawData)
+
+    if (!validatedFields.success) {
+      return {
+        success: false,
+        message: 'Validation failed',
+        errors: validatedFields.error.flatten().fieldErrors,
+      }
+    }
+
+    await db
+      .update(snippetsTable)
+      .set({
+        title: validatedFields.data.title,
+        code: validatedFields.data.code,
+        language: validatedFields.data.language,
+        framework: validatedFields.data.framework,
+        description: validatedFields.data.description,
+      })
+      .where(eq(snippetsTable.id, id))
+
+    revalidatePath('/')
+    revalidatePath(`/s/${id}`)
+
+    return {
+      success: true,
+      message: 'Snippet edited successfully',
+      snippetId: id,
+    }
+  } catch (error) {
+    console.error('Database error:', error)
+    return {
+      success: false,
+      message: 'Database error: Failed to edit snippet',
     }
   }
 }
