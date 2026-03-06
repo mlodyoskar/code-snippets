@@ -31,15 +31,21 @@ const MainLayout = (prop: MainLayoutProps) => (
         <SidebarGroup>
           <SidebarGroupLabel className="flex w-full items-center justify-between">
             Search & Filter
-            <ClearFilters />
+            <Suspense>
+              <ClearFilters />
+            </Suspense>
           </SidebarGroupLabel>
           <SidebarGroupContent className='sticky top-0 z-10 bg-sidebar'>
             <div className="mb-2 w-full">
-              <SearchInput />
+              <Suspense>
+                <SearchInput />
+              </Suspense>
             </div>
             <div className="flex">
-              <LanguageCombobox updateUrl={true} />
-              <FrameworkCombobox updateUrl={true} />
+              <Suspense>
+                <LanguageCombobox updateUrl={true} />
+                <FrameworkCombobox updateUrl={true} />
+              </Suspense>
             </div>
           </SidebarGroupContent>
         </SidebarGroup>
