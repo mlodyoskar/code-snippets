@@ -41,7 +41,7 @@ const MainLayout = (prop: MainLayoutProps) => (
                 <SearchInput />
               </Suspense>
             </div>
-            <div className="flex">
+            <div className="flex flex-col gap-2">
               <Suspense>
                 <LanguageCombobox updateUrl={true} />
                 <FrameworkCombobox updateUrl={true} />
