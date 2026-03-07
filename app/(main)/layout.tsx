@@ -7,91 +7,65 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarInset,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
 import { APP_NAME } from '@/constants/app'
-import { getSnippets } from '@/lib/queries'
-import { getLanguageIcon, getFrameworkIcon } from '@/lib/languages'
-import { Skeleton } from '@/components/ui/skeleton'
-import Image from 'next/image'
+import SearchInput from '@/components/search-input'
+import LanguageCombobox from '@/components/language-combobox'
+import FrameworkCombobox from '@/components/framework-combobox'
+import { SnippetsList, SnippetsListSkeleton } from '@/components/snippets-list'
+import { ClearFilters } from '@/components/clear-filters'
 import Link from 'next/link'
 
 type MainLayoutProps = {
   children: React.ReactNode
 }
 
-const SnippetsList = async () => {
-  const snippets = await getSnippets()
-
-  return (
-    <SidebarMenu>
-      {snippets.map((snippet) => {
-        const iconPath = snippet.framework
-          ? getFrameworkIcon(snippet.framework)
-          : getLanguageIcon(snippet.language)
-        return (
-          <SidebarMenuItem key={snippet.id}>
-            <SidebarMenuButton asChild>
-              <Link href={`/s/${snippet.id}`}>
-                <Image
-                  src={iconPath}
-                  alt={snippet.language}
-                  width={16}
-                  height={16}
-                  className="size-4"
-                />
-                <span>{snippet.title}</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        )
-      })}
-    </SidebarMenu>
-  )
-}
-
-const SnippetsListSkeleton = () => {
-  return (
-    <SidebarMenu>
-      {Array.from({ length: 10 }).map((_, i) => (
-        <SidebarMenuItem key={i} className="flex items-center gap-2 p-2">
-          <Skeleton className="size-4 rounded" />
-          <Skeleton className="h-4 w-full" />
-        </SidebarMenuItem>
-      ))}
-    </SidebarMenu>
-  )
-}
-
-const MainLayout = (prop: MainLayoutProps) => {
-  return (
-    <>
-      <Sidebar>
-        <SidebarHeader>
-          <h1 className="px-2 text-lg font-semibold">{APP_NAME}</h1>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>Snippets</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <Suspense fallback={<SnippetsListSkeleton />}>
-                <SnippetsList />
+const MainLayout = (prop: MainLayoutProps) => (
+  <>
+    <Sidebar>
+      <SidebarHeader>
+        <Link href="/" className="px-2 text-lg font-semibold">{APP_NAME}</Link>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel className="flex w-full items-center justify-between">
+            Search & Filter
+            <Suspense>
+              <ClearFilters />
+            </Suspense>
+          </SidebarGroupLabel>
+          <SidebarGroupContent className='sticky top-0 z-10 bg-sidebar'>
+            <div className="mb-2 w-full">
+              <Suspense>
+                <SearchInput />
               </Suspense>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-      </Sidebar>
-      <SidebarInset>
-        <header className="flex h-14 items-center px-4">
-          <SidebarTrigger />
-        </header>
-        <main className="flex-1 p-6">{prop.children}</main>
-      </SidebarInset>
-    </>
-  )
-}
+            </div>
+            <div className="flex">
+              <Suspense>
+                <LanguageCombobox updateUrl={true} />
+                <FrameworkCombobox updateUrl={true} />
+              </Suspense>
+            </div>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Snippets</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <Suspense fallback={<SnippetsListSkeleton />}>
+              <SnippetsList />
+            </Suspense>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
+    <SidebarInset>
+      <header className="flex h-14 items-center px-4">
+        <SidebarTrigger />
+      </header>
+      <main className="flex-1 p-6">{prop.children}</main>
+    </SidebarInset>
+  </>
+)
 
 export default MainLayout

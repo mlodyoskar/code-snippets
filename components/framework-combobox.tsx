@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import { FRAMEWORKS, type Framework } from '@/lib/languages'
 import { Field, FieldLabel } from './ui/field'
@@ -11,22 +13,54 @@ import {
 } from './ui/combobox'
 import Image from 'next/image'
 import { getFrameworkIcon } from '@/lib/languages'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
 const FrameworkCombobox = ({
   name,
   defaultValue,
+  updateUrl,
 }: {
   name?: string
   defaultValue?: string | null
+  updateUrl?: boolean
 }) => {
-  const [value, setValue] = React.useState<string | null>(defaultValue || null)
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const currentParam = searchParams.get('framework')
+  const [prevParam, setPrevParam] = React.useState(currentParam)
+
+  const [value, setValue] = React.useState<string | null>(
+    (updateUrl ? currentParam : defaultValue) || null
+  )
+
+  if (updateUrl && currentParam !== prevParam) {
+    setPrevParam(currentParam)
+    setValue(currentParam)
+  }
+
+  const handleSelect = (newValue: string | null) => {
+    setValue(newValue)
+    if (updateUrl) {
+      const params = new URLSearchParams(searchParams)
+
+      if (newValue) {
+        params.set('framework', newValue)
+      } else {
+        params.delete('framework')
+      }
+
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+    }
+  }
 
   return (
     <Field className="w-full">
-      <FieldLabel htmlFor="framework">Frameworks</FieldLabel>
-      <Combobox items={FRAMEWORKS} value={value} onValueChange={setValue}>
+      {!updateUrl && <FieldLabel htmlFor="framework">Frameworks</FieldLabel>}
+      <Combobox items={FRAMEWORKS} value={value} onValueChange={handleSelect}>
         <ComboboxInput
-          placeholder="Select a framework"
+          placeholder={updateUrl ? 'Framework' : 'Select a framework'}
           startSlot={
             value && (
               <Image
@@ -57,7 +91,7 @@ const FrameworkCombobox = ({
           </ComboboxList>
         </ComboboxContent>
       </Combobox>
-      <input type="hidden" name={name} value={value || ''} />
+      {!updateUrl && <input type="hidden" name={name} value={value || ''} />}
     </Field>
   )
 }
