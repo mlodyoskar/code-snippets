@@ -58,7 +58,7 @@ export default function RecentCards({ snippets }: RecentSnippetsCardsProps) {
                 </div>
               </CardHeader>
               <CardContent>
-                <p>{snippet.description}</p>
+                <p className="line-clamp-2 text-sm text-muted-foreground">{snippet.description}</p>
               </CardContent>
               <CardFooter>
                 <Button variant="outline" size="sm" className="w-full" asChild>
