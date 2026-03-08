@@ -25,7 +25,9 @@ const MainLayout = (prop: MainLayoutProps) => (
   <>
     <Sidebar>
       <SidebarHeader>
-        <Link href="/" className="px-2 text-lg font-semibold">{APP_NAME}</Link>
+        <Link href="/" className="px-2 text-lg font-semibold">
+          {APP_NAME}
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -35,7 +37,7 @@ const MainLayout = (prop: MainLayoutProps) => (
               <ClearFilters />
             </Suspense>
           </SidebarGroupLabel>
-          <SidebarGroupContent className='sticky top-0 z-10 bg-sidebar'>
+          <SidebarGroupContent className="bg-sidebar sticky top-0 z-10">
             <div className="mb-2 w-full">
               <Suspense>
                 <SearchInput />

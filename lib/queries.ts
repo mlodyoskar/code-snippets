@@ -1,4 +1,3 @@
-'use server'
 
 import { db } from '@/db'
 import { snippetsTable } from '@/db/schema'
@@ -67,7 +66,7 @@ export const getSnippetStats = async () => {
 
   return {
     total,
-    topLanguage: topLanguageRes[0] || { name: 'N/A', count: 0 },
-    topFramework: topFrameworkRes[0] || { name: 'N/A', count: 0 },
+    topLanguage: topLanguageRes[0] ?? { name: null, count: 0 },
+    topFramework: topFrameworkRes[0] ?? { name: null, count: 0 },
   }
 }

@@ -21,7 +21,7 @@ export default function RecentCards({ snippets }: RecentSnippetsCardsProps) {
         Recent snippets:
       </h2>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {snippets.map((snippet: Snippet) => {
+        {snippets.map((snippet) => {
           return (
             <Card
               key={snippet.id}
@@ -61,10 +61,8 @@ export default function RecentCards({ snippets }: RecentSnippetsCardsProps) {
                 <p>{snippet.description}</p>
               </CardContent>
               <CardFooter>
-                <Button variant="outline" size="sm" className="w-full">
-                <Link href={`/s/${snippet.id}`} >
-                  View
-                </Link>
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <Link href={`/s/${snippet.id}`}>View</Link>
                 </Button>
               </CardFooter>
             </Card>

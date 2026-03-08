@@ -1,7 +1,6 @@
 import Onboard from '@/components/onboard'
 import RecentCards from '@/components/recent-cards'
 import StatsCards from '@/components/stats-cards'
-import { Separator } from '@/components/ui/separator'
 import { getRecentSnippets, getSnippetStats } from '@/lib/queries'
 
 export default async function Page() {
@@ -16,7 +15,6 @@ export default async function Page() {
           topLanguage={stats.topLanguage}
           topFramework={stats.topFramework}
         />
-
         <RecentCards snippets={recent} />
       </section>
     </div>

@@ -9,11 +9,11 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from './ui/sidebar'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getSnippets } from '@/lib/queries'
 import { Skeleton } from './ui/skeleton'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Snippet } from '@/db/schema'
+import { fetchSnippets } from '@/lib/snippet-actions'
 
 export const SnippetsList = () => {
   const searchParams = useSearchParams()
@@ -24,14 +24,10 @@ export const SnippetsList = () => {
     const fetchFiltered = async () => {
       setIsLoading(true)
 
-      const q = searchParams.get('q') || undefined
-      const lang = searchParams.get('lang') || undefined
-      const fw = searchParams.get('framework') || undefined
-
-      const data = await getSnippets({
-        search: q,
-        language: lang as Language,
-        framework: fw as Framework,
+      const data = await fetchSnippets({
+        q: searchParams.get('q') || undefined,
+        lang: searchParams.get('lang') || undefined,
+        framework: searchParams.get('framework') || undefined,
       })
 
       setSnippets(data)
@@ -49,8 +45,8 @@ export const SnippetsList = () => {
     <SidebarMenu>
       {snippets.map((snippet) => {
         const iconPath = snippet.framework
-          ? getFrameworkIcon(snippet.framework)
-          : getLanguageIcon(snippet.language)
+          ? getFrameworkIcon(snippet.framework as Framework)
+          : getLanguageIcon(snippet.language as Language)
         return (
           <SidebarMenuItem key={snippet.id}>
             <SidebarMenuButton asChild>
