@@ -25,7 +25,9 @@ const MainLayout = (prop: MainLayoutProps) => (
   <>
     <Sidebar>
       <SidebarHeader>
-        <Link href="/" className="px-2 text-lg font-semibold">{APP_NAME}</Link>
+        <Link href="/" className="px-2 text-lg font-semibold">
+          {APP_NAME}
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -35,13 +37,13 @@ const MainLayout = (prop: MainLayoutProps) => (
               <ClearFilters />
             </Suspense>
           </SidebarGroupLabel>
-          <SidebarGroupContent className='sticky top-0 z-10 bg-sidebar'>
+          <SidebarGroupContent className="bg-sidebar sticky top-0 z-10">
             <div className="mb-2 w-full">
               <Suspense>
                 <SearchInput />
               </Suspense>
             </div>
-            <div className="flex">
+            <div className="flex flex-col gap-2">
               <Suspense>
                 <LanguageCombobox updateUrl={true} />
                 <FrameworkCombobox updateUrl={true} />
@@ -63,7 +65,7 @@ const MainLayout = (prop: MainLayoutProps) => (
       <header className="flex h-14 items-center px-4">
         <SidebarTrigger />
       </header>
-      <main className="flex-1 p-6">{prop.children}</main>
+      <main className="flex-1 p-2 md:p-6">{prop.children}</main>
     </SidebarInset>
   </>
 )

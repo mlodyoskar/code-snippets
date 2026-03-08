@@ -37,16 +37,18 @@ const initialState = {
 const AddSnippetDialog = ({
   editMode = false,
   snippet,
+  className,
 }: {
   editMode?: boolean
   snippet?: Snippet
+  className?: string
 }) => {
   const [open, setOpen] = useState(false)
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={editMode ? 'outline' : 'default'}>
+        <Button variant={editMode ? 'outline' : 'default'} className={className}>
           {editMode ? 'Edit Snippet' : 'Add Snippet'}
         </Button>
       </DialogTrigger>
