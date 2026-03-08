@@ -66,7 +66,7 @@ export default function StatsCards({
         </CardContent>
       </Card>
 
-      <Card size="sm" className="m-1 w-full">
+      <Card size="sm" className="m-1 h-25 w-full">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Layers className="text-muted-foreground h-4 w-4" />

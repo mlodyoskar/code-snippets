@@ -63,7 +63,7 @@ const MainLayout = (prop: MainLayoutProps) => (
       <header className="flex h-14 items-center px-4">
         <SidebarTrigger />
       </header>
-      <main className="flex-1 p-6">{prop.children}</main>
+      <main className="flex-1 p-2 md:p-6">{prop.children}</main>
     </SidebarInset>
   </>
 )
