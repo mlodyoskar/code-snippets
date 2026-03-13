@@ -1,5 +1,5 @@
 import { db } from '@/db'
-import { usersTable, snippetsTable } from './schema'
+import { users, snippetsTable } from './schema'
 import type { Language, Framework } from '@/lib/languages'
 
 type SnippetSeed = {
@@ -231,26 +231,23 @@ if (result.success) {
 async function seed() {
   console.log('🌱 Starting seed...')
 
-  // First, create a user if none exists
-  const existingUsers = await db.select().from(usersTable).limit(1)
+  // Clear existing data to avoid conflicts with new schema constraints
+  console.log('Clearing existing data...')
+  await db.delete(snippetsTable)
+  console.log('users obj:', users)
+  await db.delete(users)
 
-  let userId: number
+  console.log('Creating seed user...')
+  const [newUser] = await db
+    .insert(users)
+    .values({
+      name: 'Demo User',
+      email: 'demo@example.com',
+    })
+    .returning()
 
-  if (existingUsers.length === 0) {
-    console.log('Creating seed user...')
-    const [newUser] = await db
-      .insert(usersTable)
-      .values({
-        name: 'Demo User',
-        email: 'demo@example.com',
-      })
-      .returning()
-    userId = newUser.id
-    console.log(`✅ Created user with id: ${userId}`)
-  } else {
-    userId = existingUsers[0].id
-    console.log(`Using existing user with id: ${userId}`)
-  }
+  const userId = newUser.id
+  console.log(`✅ Created user with id: ${userId}`)
 
   // Insert snippets
   console.log('Inserting snippets...')

@@ -29,8 +29,8 @@ export const snippetsTable = pgTable(
   'snippets',
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    userId: integer()
-      .references(() => usersTable.id, { onDelete: 'cascade' })
+    userId: text()
+      .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
     title: varchar({ length: 255 }).notNull(),
     code: text().notNull(),
@@ -45,14 +45,6 @@ export const snippetsTable = pgTable(
     index('framework_idx').on(table.framework),
   ]
 )
-
-export const usersTable = pgTable('users', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: varchar({ length: 255 }).notNull(),
-  email: varchar({ length: 255 }).notNull().unique(),
-  createdAt: timestamp().defaultNow().notNull(),
-  updatedAt: timestamp().defaultNow().notNull(),
-})
 
 export const accounts = pgTable(
   'account',

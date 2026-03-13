@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { db } from '@/db'
-import { snippetsTable, usersTable } from '@/db/schema'
+import { snippetsTable, users } from '@/db/schema'
 import { createSnippetSchema } from '@/lib/schemas'
 import { z } from 'zod'
 import { eq } from 'drizzle-orm'
@@ -41,7 +41,7 @@ export async function createSnippetAction(
 
     // Temporary authorization: Get the first user
     // In a real app, you would get the user from the session
-    const firstUser = await db.select().from(usersTable).limit(1)
+    const firstUser = await db.select().from(users).limit(1)
 
     if (!firstUser || firstUser.length === 0) {
       return {
