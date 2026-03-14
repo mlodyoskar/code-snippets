@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -16,6 +17,7 @@ import FrameworkCombobox from '@/components/framework-combobox'
 import { SnippetsList, SnippetsListSkeleton } from '@/components/snippets-list'
 import { ClearFilters } from '@/components/clear-filters'
 import Link from 'next/link'
+import LogoutButton from '@/components/logout-button'
 
 type MainLayoutProps = {
   children: React.ReactNode
@@ -60,6 +62,9 @@ const MainLayout = (prop: MainLayoutProps) => (
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <LogoutButton />
+      </SidebarFooter>
     </Sidebar>
     <SidebarInset>
       <header className="flex h-14 items-center px-4">
