@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { db } from '@/db'
-import { snippetsTable, usersTable } from '@/db/schema'
+import { snippetsTable } from '@/db/schema'
 import { createSnippetSchema } from '@/lib/schemas'
 import { z } from 'zod'
 import { and, eq } from 'drizzle-orm'

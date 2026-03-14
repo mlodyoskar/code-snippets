@@ -1,14 +1,20 @@
-
 import { db } from '@/db'
 import { snippetsTable } from '@/db/schema'
 import { eq, ilike, and, desc, count, isNotNull } from 'drizzle-orm'
 import { Language, Framework } from '@/lib/languages'
+import { authOptions } from '@/db/auth'
+import { getServerSession } from 'next-auth'
 
 export const getSnippets = async (filters?: {
   search?: string
   language?: Language
   framework?: Framework
 }) => {
+  const session = await getServerSession(authOptions)
+  const userId = session?.user?.id
+  if (!userId) {
+    throw new Error('Unauthorized')
+  }
   const conditions = []
   if (filters?.search) {
     conditions.push(ilike(snippetsTable.title, `%${filters.search}%`))
@@ -25,22 +31,49 @@ export const getSnippets = async (filters?: {
   return db
     .select()
     .from(snippetsTable)
-    .where(conditions.length > 0 ? and(...conditions) : undefined)
+    .where(
+      conditions.length > 0
+        ? and(...conditions, eq(snippetsTable.userId, userId))
+        : eq(snippetsTable.userId, userId)
+    )
 }
 
-export const getSnippetById = async (id: number) =>
-  db.select().from(snippetsTable).where(eq(snippetsTable.id, id))
-
-export const getRecentSnippets = async (limit: number = 6) => {
+export const getSnippetById = async (id: number) => {
+  const session = await getServerSession(authOptions)
+  const userId = session?.user?.id
+  if (!userId) {
+    throw new Error('Unauthorized')
+  }
   return db
     .select()
     .from(snippetsTable)
+    .where(and(eq(snippetsTable.id, id), eq(snippetsTable.userId, userId)))
+}
+
+export const getRecentSnippets = async (limit: number = 6) => {
+  const session = await getServerSession(authOptions)
+  const userId = session?.user?.id
+  if (!userId) {
+    throw new Error('Unauthorized')
+  }
+  return db
+    .select()
+    .from(snippetsTable)
+    .where(eq(snippetsTable.userId, userId))
     .orderBy(desc(snippetsTable.createdAt))
     .limit(limit)
 }
 
 export const getSnippetStats = async () => {
-  const totalRes = await db.select({ value: count() }).from(snippetsTable)
+  const session = await getServerSession(authOptions)
+  const userId = session?.user?.id
+  if (!userId) {
+    throw new Error('Unauthorized')
+  }
+  const totalRes = await db
+    .select({ value: count() })
+    .from(snippetsTable)
+    .where(eq(snippetsTable.userId, userId))
   const total = totalRes[0]?.value ?? 0
 
   const topLanguageRes = await db
@@ -49,6 +82,7 @@ export const getSnippetStats = async () => {
       count: count(),
     })
     .from(snippetsTable)
+    .where(eq(snippetsTable.userId, userId))
     .groupBy(snippetsTable.language)
     .orderBy(desc(count()))
     .limit(1)
@@ -59,7 +93,9 @@ export const getSnippetStats = async () => {
       count: count(),
     })
     .from(snippetsTable)
-    .where(isNotNull(snippetsTable.framework))
+    .where(
+      and(isNotNull(snippetsTable.framework), eq(snippetsTable.userId, userId))
+    )
     .groupBy(snippetsTable.framework)
     .orderBy(desc(count()))
     .limit(1)
