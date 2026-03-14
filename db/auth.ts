@@ -4,6 +4,7 @@ import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import { db } from '.'
 import Google from 'next-auth/providers/google'
 import { accounts, sessions, usersTable, verificationTokens } from './schema'
+import { AUTH_PATH } from '@/constants/paths'
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db, {
@@ -42,7 +43,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: '/auth/login',
+    signIn: AUTH_PATH,
   },
 }
 
