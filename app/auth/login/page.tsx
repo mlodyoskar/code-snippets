@@ -11,10 +11,8 @@ export default async function Login() {
   }
 
   return (
-    <div className="mt-30 flex w-full justify-center">
-      <div className="flex flex-col items-center gap-4">
-        <LoginCard />
-      </div>
+    <div className="mt-32 flex w-full flex-col items-center gap-4">
+      <LoginCard />
     </div>
   )
 }

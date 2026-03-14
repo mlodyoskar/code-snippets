@@ -8,13 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { APP_NAME } from '@/constants/app'
 import { signIn } from 'next-auth/react'
 
 export function LoginCard() {
   return (
-    <Card className="w-full w-md">
+    <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Code snippets</CardTitle>
+        <CardTitle className="text-2xl font-bold">{APP_NAME}</CardTitle>
         <CardDescription>
           Login with Google to access your snippets
         </CardDescription>
