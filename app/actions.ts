@@ -5,7 +5,9 @@ import { db } from '@/db'
 import { snippetsTable, usersTable } from '@/db/schema'
 import { createSnippetSchema } from '@/lib/schemas'
 import { z } from 'zod'
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/db/auth'
 
 export type ActionState = {
   success: boolean
@@ -39,18 +41,14 @@ export async function createSnippetAction(
       }
     }
 
-    // Temporary authorization: Get the first user
-    // In a real app, you would get the user from the session
-    const firstUser = await db.select().from(usersTable).limit(1)
-
-    if (!firstUser || firstUser.length === 0) {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
       return {
         success: false,
-        message: 'No user found in the database. Please create a user first.',
+        message: 'Unauthorized',
       }
     }
-
-    const userId = firstUser[0].id
+    const userId = session.user.id
 
     const [newSnippet] = await db
       .insert(snippetsTable)
@@ -84,7 +82,17 @@ export async function deleteSnippetAction(
   id: number
 ): Promise<{ success: boolean; message: string }> {
   try {
-    await db.delete(snippetsTable).where(eq(snippetsTable.id, id))
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: 'Unauthorized',
+      }
+    }
+    const userId = session.user.id
+    await db
+      .delete(snippetsTable)
+      .where(and(eq(snippetsTable.id, id), eq(snippetsTable.userId, userId)))
     revalidatePath('/')
     return { success: true, message: 'Snippet deleted successfully' }
   } catch (error) {
@@ -102,6 +110,15 @@ export async function editSnippetAction(
   formData: FormData
 ): Promise<ActionState> {
   try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: 'Unauthorized',
+      }
+    }
+    const userId = session.user.id
+
     const rawData = {
       title: formData.get('title'),
       code: formData.get('code'),
@@ -129,7 +146,7 @@ export async function editSnippetAction(
         framework: validatedFields.data.framework,
         description: validatedFields.data.description,
       })
-      .where(eq(snippetsTable.id, id))
+      .where(and(eq(snippetsTable.id, id), eq(snippetsTable.userId, userId)))
 
     revalidatePath('/')
     revalidatePath(`/s/${id}`)
