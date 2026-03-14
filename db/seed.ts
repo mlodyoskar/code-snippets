@@ -234,7 +234,7 @@ async function seed() {
   // First, create a user if none exists
   const existingUsers = await db.select().from(usersTable).limit(1)
 
-  let userId: number
+  let userId: string
 
   if (existingUsers.length === 0) {
     console.log('Creating seed user...')
