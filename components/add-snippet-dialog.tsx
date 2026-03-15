@@ -48,11 +48,14 @@ const AddSnippetDialog = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={editMode ? 'outline' : 'default'} className={className}>
+        <Button
+          variant={editMode ? 'outline' : 'default'}
+          className={className}
+        >
           {editMode ? 'Edit Snippet' : 'Add Snippet'}
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-primary-foreground sm:max-w-xl">
+      <DialogContent className="bg-primary-foreground max-h-[90dvh] overflow-y-auto sm:max-h-none sm:max-w-xl sm:overflow-visible">
         <DialogHeader>
           <DialogTitle className="sr-only">Snippet Management</DialogTitle>
           <DialogDescription className="sr-only">
@@ -124,7 +127,7 @@ const AddSnippetForm = ({
               id="code"
               name="code"
               placeholder="Paste your code snippet"
-              className="max-h-[400px] min-h-[200px] overflow-auto font-mono whitespace-pre"
+              className="max-h-[200px] min-h-[120px] overflow-auto font-mono whitespace-pre sm:max-h-[300px] sm:min-h-[200px]"
               disabled={isPending}
               defaultValue={snippet?.code}
             />
@@ -164,6 +167,7 @@ const AddSnippetForm = ({
               id="description"
               name="description"
               placeholder="Your code description..."
+              className="max-h-[120px] overflow-auto"
               rows={4}
               disabled={isPending}
               defaultValue={snippet?.description ?? ''}
