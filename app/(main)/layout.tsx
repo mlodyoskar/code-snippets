@@ -18,6 +18,7 @@ import { SnippetsList, SnippetsListSkeleton } from '@/components/snippets-list'
 import { ClearFilters } from '@/components/clear-filters'
 import Link from 'next/link'
 import LogoutButton from '@/components/logout-button'
+import AddSnippetDialog from '@/components/add-snippet-dialog'
 
 type MainLayoutProps = {
   children: React.ReactNode
@@ -32,6 +33,13 @@ const MainLayout = (prop: MainLayoutProps) => (
         </Link>
       </SidebarHeader>
       <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent className="bg-sidebar sticky top-0 z-10">
+            <div className="w-full">
+              <AddSnippetDialog className="w-full" />
+            </div>
+          </SidebarGroupContent>
+        </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel className="flex w-full items-center justify-between">
             Search & Filter
