@@ -34,7 +34,7 @@ const MainLayout = (prop: MainLayoutProps) => (
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupContent className="bg-sidebar sticky top-0 z-10">
+          <SidebarGroupContent className="bg-sidebar">
             <div className="w-full">
               <AddSnippetDialog className="w-full" />
             </div>
@@ -47,7 +47,7 @@ const MainLayout = (prop: MainLayoutProps) => (
               <ClearFilters />
             </Suspense>
           </SidebarGroupLabel>
-          <SidebarGroupContent className="bg-sidebar sticky top-0 z-10">
+          <SidebarGroupContent className="bg-sidebar">
             <div className="mb-2 w-full">
               <Suspense>
                 <SearchInput />
