@@ -17,10 +17,10 @@ import { FEATURES } from '@/constants/features'
 
 const WelcomeCard = () => {
   return (
-    <>
+    <div className="mt-32 flex w-full flex-col items-center gap-4 px-4">
       <div className="flex max-w-[400px] flex-col text-center">
         <h1 className="mb-2 text-3xl font-extrabold">Code snippets</h1>
-        <p className="text-[15px]">
+        <p className="text-muted-foreground text-sm">
           Your personal snippet library — save, search, and copy code in
           seconds.
         </p>
@@ -30,7 +30,7 @@ const WelcomeCard = () => {
         role="region"
         aria-label="Login"
       >
-        <CardHeader className="border-b px-6 py-6 pb-5">
+        <CardHeader className="border-b px-7 pt-7 pb-5">
           <CardTitle className="text-base font-semibold">
             Get started for free
           </CardTitle>
@@ -40,7 +40,7 @@ const WelcomeCard = () => {
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="flex flex-col gap-4 px-6 py-6">
+        <CardContent className="flex flex-col gap-4 p-7">
           <div className="flex flex-wrap gap-2" aria-label="Features">
             {FEATURES.map((feature) => (
               <span
@@ -70,7 +70,7 @@ const WelcomeCard = () => {
           </Button>
         </CardContent>
       </Card>
-    </>
+    </div>
   )
 }
 

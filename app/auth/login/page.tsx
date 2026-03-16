@@ -11,9 +11,5 @@ export default async function Login() {
     redirect('/')
   }
 
-  return (
-    <div className="mt-32 flex w-full flex-col items-center gap-4 px-4">
-      <WelcomeCard />
-    </div>
-  )
+  return <WelcomeCard />
 }
