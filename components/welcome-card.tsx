@@ -41,9 +41,9 @@ const WelcomeCard = () => {
         </CardHeader>
 
         <CardContent className="flex flex-col gap-4 p-7">
-          <div className="flex flex-wrap gap-2" aria-label="Features">
+          <ul className="flex flex-wrap gap-2" aria-label="Features">
             {FEATURES.map((feature) => (
-              <span
+              <li
                 key={feature}
                 className="bg-muted text-muted-foreground hover:border-border hover:text-foreground flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-xs transition-colors"
               >
@@ -52,9 +52,9 @@ const WelcomeCard = () => {
                   strokeWidth={2.5}
                 />
                 {feature}
-              </span>
+              </li>
             ))}
-          </div>
+          </ul>
           <div className="text-muted-foreground flex items-center gap-3 text-xs">
             <Separator className="flex-1" />
             continue with
@@ -65,7 +65,7 @@ const WelcomeCard = () => {
             className="w-full gap-2"
             onClick={() => signIn('google', { callbackUrl: '/' })}
           >
-            <Image src={GoogleIcon} alt="Google" width={16} height={16} />
+            <Image src={GoogleIcon} alt="" width={16} height={16} />
             Continue with Google
           </Button>
         </CardContent>
